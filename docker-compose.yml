@@ -12,9 +12,13 @@ services:
       - grafana-volume:/var/lib/grafana
     depends_on:
       - influxdb
-
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_USERNAME}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
 
   influxdb:
+    env_file:
+      - .env.inf
     image: influxdb:1.8
     container_name: influxdb
     restart: always
@@ -25,7 +29,7 @@ services:
     volumes:
       - influxdb-volume:/var/lib/influxdb
     environment:
-      - INFLUXDB_DB=jmeter
+      - INFLUXDB_DB=${INFLUXDB_DB}
 networks:
   monitoring:
 volumes:
